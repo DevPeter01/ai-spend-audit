@@ -65,7 +65,7 @@ function analyzeToolSpend(entry: ToolEntry, teamSize: number, useCase: UseCaseTy
   if (entry.tool === 'chatgpt') {
     if (entry.plan === 'Team' && entry.seats === 1) {
       recommendedPlan = 'Plus';
-      estimatedNewSpend = 20;
+      estimatedNewSpend = 20 * entry.seats;
       recommendedAction = 'Downgrade to Plus';
       reason = `ChatGPT Team is designed for collaborative workspaces. Solo users get identical model access on Plus at $10/month less.`;
     }
@@ -102,13 +102,22 @@ function analyzeToolSpend(entry: ToolEntry, teamSize: number, useCase: UseCaseTy
   if (entry.tool === 'windsurf') {
     if (entry.plan === 'Team' && entry.seats === 1) {
       recommendedPlan = 'Pro';
-      estimatedNewSpend = 15;
+      estimatedNewSpend = 15 * entry.seats;
       recommendedAction = 'Downgrade to Pro';
       reason = `Windsurf Team plan is $35/user for teams. Solo users can get the same individual features on the Pro plan for just $15/month.`;
     }
   }
 
   const monthlySavings = Math.max(0, currentSpend - estimatedNewSpend);
+
+  console.log('[AuditEngine]', {
+    tool: entry.tool,
+    currentSpend,
+    estimatedNewSpend,
+    monthlySavings,
+    plan: entry.plan,
+    seats: entry.seats,
+  });
 
   return {
     tool: entry.tool,

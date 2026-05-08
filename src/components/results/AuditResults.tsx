@@ -1,5 +1,16 @@
 import { AuditResult } from '@/types';
 
+const TOOL_DISPLAY_NAMES: Record<string, string> = {
+  'cursor': 'Cursor',
+  'github-copilot': 'GitHub Copilot',
+  'claude': 'Claude',
+  'chatgpt': 'ChatGPT',
+  'anthropic-api': 'Anthropic API',
+  'openai-api': 'OpenAI API',
+  'gemini': 'Gemini',
+  'windsurf': 'Windsurf',
+};
+
 interface AuditResultsProps {
   result: AuditResult;
   onReset: () => void;
@@ -19,7 +30,9 @@ export default function AuditResults({ result, onReset }: AuditResultsProps) {
           <div key={i} className="border border-gray-100 rounded-xl p-4">
             <div className="flex justify-between items-start">
               <div>
-                <p className="font-semibold text-gray-800">{r.tool}</p>
+                <p className="font-semibold text-gray-800">
+                  {TOOL_DISPLAY_NAMES[r.tool] || r.tool}
+                </p>
                 <p className="text-sm text-gray-500">{r.recommendedAction}</p>
                 <p className="text-xs text-gray-400 mt-1">{r.reason}</p>
               </div>

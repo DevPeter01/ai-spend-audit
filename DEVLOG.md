@@ -23,3 +23,29 @@ Need to decide on folder structure before building the form. Also need to reach 
 - Set up folder structure (components, lib, types)
 - Build the spend input form with all 8 tools
 - Start collecting pricing data into PRICING_DATA.md
+
+## Day 2 — 2026-05-08
+
+**Hours worked:** 4
+
+**What I did:**
+Built core pricing data for all 8 tools with official source URLs.
+Built the audit engine with defensible per-tool reasoning and correct savings math.
+Built the spend input form with localStorage persistence.
+Ran a full code review pass — fixed TypeScript path aliases in tsconfig,
+race condition in localStorage useEffect, missing Windsurf and Gemini logic,
+and moved results logic into its own component.
+
+**What I learned:**
+The tsconfig @/* alias must point to ./src/* not ./* when using a src/ directory.
+localStorage useEffect needs an isLoaded guard or it overwrites saved state on mount.
+Audit engine logic needs to account for seat count × price, not just plan name.
+
+**Blockers / what I'm stuck on:**
+Need to build the proper results page UI — currently just raw data showing.
+Need to reach out to 3 real people for user interviews today.
+
+**Plan for tomorrow:**
+- Build the full visual Results page (the "money page")
+- Add Anthropic API integration for AI summary
+- Start Supabase setup for lead capture
