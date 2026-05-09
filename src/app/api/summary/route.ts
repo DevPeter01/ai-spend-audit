@@ -25,12 +25,12 @@ function getTopRecommendation(auditResult: AuditResult) {
 }
 
 /**
- * Computes the total current monthly spend from individual tool entries
- * (monthlySpend × seats for each tool).
+ * Computes the total current monthly spend from individual tool entries.
+ * Each tool's monthlySpend already represents the full amount the user pays.
  */
 function computeTotalCurrentSpend(auditResult: AuditResult): number {
   return auditResult.input.tools.reduce(
-    (sum, t) => sum + t.monthlySpend * t.seats,
+    (sum, tool) => sum + tool.monthlySpend,
     0,
   );
 }
@@ -75,23 +75,26 @@ async function fetchAnthropicSummary(
   const totalCurrentSpend = computeTotalCurrentSpend(auditResult);
   const top = getTopRecommendation(auditResult);
 
+  const toolCount = auditResult.input.tools.length;
+
   let userPrompt: string;
 
   if (!top) {
     userPrompt =
-      `Write a 80-100 word personalized audit summary for a ${teamSize}-person team ` +
-      `whose primary use case is ${useCase}. They currently spend $${totalCurrentSpend.toFixed(2)}/month ` +
-      `on AI tools. We found no significant savings opportunities — their spend appears optimal. ` +
-      `Be encouraging and suggest they keep monitoring as their team grows.`;
+      `A ${teamSize}-person team primarily uses AI for ${useCase}. ` +
+      `Their total AI spend is $${totalCurrentSpend}/month across ${toolCount} tools. ` +
+      `We found no significant savings opportunities — their spend appears optimal. ` +
+      `Write an 80-100 word personalized summary. Be encouraging and suggest they ` +
+      `keep monitoring as their team grows.`;
   } else {
     userPrompt =
-      `Write a 80-100 word personalized audit summary for a ${teamSize}-person team ` +
-      `whose primary use case is ${useCase}. ` +
-      `They currently spend $${totalCurrentSpend.toFixed(2)}/month on AI tools. ` +
-      `We found $${totalMonthlySavings.toFixed(2)}/month in potential savings. ` +
-      `Top recommendation: ${top.recommendedAction} for ${top.tool} saving $${top.monthlySavings.toFixed(2)}/month. ` +
-      `Be specific, warm, and actionable. End with one sentence about what they could do with the ` +
-      `$${totalAnnualSavings.toFixed(2)} in annual savings.`;
+      `A ${teamSize}-person team primarily uses AI for ${useCase}. ` +
+      `Their total AI spend is $${totalCurrentSpend}/month across ${toolCount} tools. ` +
+      `We found $${totalMonthlySavings}/month in savings ($${totalAnnualSavings}/year). ` +
+      `Top opportunity: ${top.tool} — ${top.reason} ` +
+      `Monthly saving: $${top.monthlySavings}. ` +
+      `Write an 80-100 word personalized summary. End with one concrete sentence ` +
+      `about what they could reinvest the savings into.`;
   }
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -105,7 +108,7 @@ async function fetchAnthropicSummary(
       model: 'claude-3-5-haiku-20241022',
       max_tokens: 200,
       system:
-        'You are a concise financial advisor for tech startups. Write in second person, plain English, no jargon.',
+        'You are a concise financial advisor for tech startups. Write in second person, plain English, no jargon. Be warm and specific. Maximum 100 words.',
       messages: [{ role: 'user', content: userPrompt }],
     }),
   });
