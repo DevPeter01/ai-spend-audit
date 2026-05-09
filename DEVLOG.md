@@ -49,3 +49,32 @@ Need to reach out to 3 real people for user interviews today.
 - Build the full visual Results page (the "money page")
 - Add Anthropic API integration for AI summary
 - Start Supabase setup for lead capture
+
+## Day 3 — 2026-05-09
+
+**Hours worked:** 5
+
+**What I did:**
+Built the full visual results page with hero savings display, 
+per-tool breakdown cards, AI summary section, lead capture form, 
+and share URL feature. Integrated Anthropic API for personalized 
+summaries with graceful fallback. Set up Supabase for lead storage 
+and audit persistence. Implemented shareable /audit/[id] public pages 
+with Open Graph meta tags.
+
+**What I learned:**
+Next.js App Router API routes need explicit error boundaries — 
+the Anthropic API can timeout and the fallback must always return 
+a valid response. Supabase RLS needs to be configured carefully 
+for public read vs authenticated write.
+
+**Blockers / what I'm stuck on:**
+Need to set up actual Supabase project and get API keys.
+Need to get Anthropic API key for summary generation.
+
+**Plan for tomorrow:**
+- Deploy to Vercel
+- Set up environment variables in Vercel dashboard
+- Run Lighthouse scores and fix any issues
+- Write PRICING_DATA.md with all official source URLs
+- Start writing GTM.md and ECONOMICS.md
