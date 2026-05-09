@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { AuditInput, ToolEntry, AITool, UseCaseType } from '@/types';
+import { PRICING_DATA } from '@/lib/pricingData';
 
 const TOOLS_CONFIG = [
   { id: 'cursor', label: 'Cursor', plans: ['Hobby', 'Pro', 'Business', 'Enterprise'] },
@@ -28,12 +29,19 @@ interface SpendFormProps {
   onSubmit: (input: AuditInput) => void;
 }
 
+function getDefaultSpend(toolId: string, plan: string): number {
+  const pricing = PRICING_DATA[toolId as AITool];
+  const planInfo = pricing?.plans.find(p => p.name === plan);
+  return planInfo?.pricePerUserPerMonth ?? 0;
+}
+
 export default function SpendForm({ onSubmit }: SpendFormProps) {
   const [teamSize, setTeamSize] = useState(1);
   const [useCase, setUseCase] = useState<UseCaseType>('mixed');
   const [enabledTools, setEnabledTools] = useState<Record<string, boolean>>({});
   const [toolEntries, setToolEntries] = useState<Record<string, ToolEntry>>({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [formError, setFormError] = useState<string>('');
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -60,6 +68,7 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
   }, [teamSize, useCase, enabledTools, toolEntries, isLoaded]);
 
   const toggleTool = (toolId: string, plans: string[]) => {
+    setFormError('');
     setEnabledTools(prev => {
       const isEnabled = !prev[toolId];
       if (isEnabled && !toolEntries[toolId]) {
@@ -83,7 +92,11 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
     const tools = Object.entries(toolEntries)
       .filter(([id]) => enabledTools[id])
       .map(([, entry]) => entry);
-    if (tools.length === 0) return alert('Please add at least one AI tool.');
+    if (tools.length === 0) {
+      setFormError('Please add at least one AI tool.');
+      return;
+    }
+    setFormError('');
     onSubmit({ tools, teamSize, useCase });
   };
 
@@ -155,7 +168,8 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
                   <input
                     type="number"
                     min={0}
-                    value={toolEntries[id].monthlySpend}
+                    value={toolEntries[id].monthlySpend || ''}
+                    placeholder={`e.g. $${getDefaultSpend(id, toolEntries[id]?.plan)}`}
                     onChange={e => updateEntry(id, 'monthlySpend', Number(e.target.value))}
                     className="w-full border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
@@ -175,6 +189,12 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
           </div>
         ))}
       </div>
+
+      {formError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
+          {formError}
+        </div>
+      )}
 
       <button
         onClick={handleSubmit}
