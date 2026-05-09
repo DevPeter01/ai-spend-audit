@@ -52,29 +52,33 @@ Need to reach out to 3 real people for user interviews today.
 
 ## Day 3 — 2026-05-09
 
-**Hours worked:** 5
+**Hours worked:** 6
 
 **What I did:**
-Built the full visual results page with hero savings display, 
-per-tool breakdown cards, AI summary section, lead capture form, 
-and share URL feature. Integrated Anthropic API for personalized 
-summaries with graceful fallback. Set up Supabase for lead storage 
-and audit persistence. Implemented shareable /audit/[id] public pages 
-with Open Graph meta tags.
+Ran a full project audit using a structured review prompt.
+Found and fixed 3 critical bugs: wrong field name in lead 
+submission, missing totalMonthlySavings and toolsAudited from 
+lead POST body, and aiSummary not persisting to Supabase or 
+showing on shared pages. Created missing leads table SQL migration 
+and ai_summary column migration. Fixed uuid version mismatch, 
+removed unused @anthropic-ai/sdk, replaced browser alert() with 
+inline error UI. Extracted shared UI components to eliminate 
+duplication. Wrote PRICING_DATA.md, PROMPTS.md, ARCHITECTURE.md.
 
 **What I learned:**
-Next.js App Router API routes need explicit error boundaries — 
-the Anthropic API can timeout and the fallback must always return 
-a valid response. Supabase RLS needs to be configured carefully 
-for public read vs authenticated write.
+Systematic auditing before moving forward saved hours of 
+debugging later. The leads table was never being written to — 
+would have been embarrassing to discover after submission.
+Running migrations in order matters in Supabase.
 
 **Blockers / what I'm stuck on:**
-Need to set up actual Supabase project and get API keys.
-Need to get Anthropic API key for summary generation.
+Still need to deploy to Vercel and set env variables there.
+Need to write GTM, ECONOMICS, USER_INTERVIEWS, LANDING_COPY, 
+METRICS, REFLECTION, TESTS, and README.
+Need to reach out to real users for interviews TODAY.
 
 **Plan for tomorrow:**
-- Deploy to Vercel
-- Set up environment variables in Vercel dashboard
-- Run Lighthouse scores and fix any issues
-- Write PRICING_DATA.md with all official source URLs
-- Start writing GTM.md and ECONOMICS.md
+- Deploy to Vercel (30 mins)
+- Run Lighthouse, fix any score issues
+- Write GTM.md and ECONOMICS.md (highest scoring docs)
+- Contact 3 people for user interviews
