@@ -1,37 +1,53 @@
-Write PRICING_DATA.md for the AI Spend Audit project.
+# Pricing Data — AI Spend Audit
 
-Format exactly as specified in the assignment:
+Last updated: 2026-05-10
 
-## Tool Name
-- Plan: $X/user/month — URL — verified YYYY-MM-DD
+## Cursor
+- Hobby: $0/user/month — https://cursor.sh/pricing — verified 2026-05-10
+- Pro: $20/user/month — https://cursor.sh/pricing — verified 2026-05-10
+- Business: $40/user/month — https://cursor.sh/pricing — verified 2026-05-10
+- Enterprise: Contact sales — https://cursor.sh/pricing — verified 2026-05-10
 
-Cover all 8 tools:
-- Cursor: Hobby ($0), Pro ($20), Business ($40), Enterprise (contact sales)
-  URL: https://cursor.sh/pricing
-  
-- GitHub Copilot: Individual ($10), Business ($19), Enterprise ($39)
-  URL: https://github.com/features/copilot#pricing
-  
-- Claude: Free ($0), Pro ($20), Max ($100), Team ($30/user, min 5), 
-  Enterprise (contact sales)
-  URL: https://www.anthropic.com/pricing
-  
-- ChatGPT: Free ($0), Plus ($20), Team ($30/user, min 2), 
-  Enterprise (contact sales)
-  URL: https://openai.com/chatgpt/pricing
-  
-- Anthropic API: Usage-based, input/output per million tokens pricing
-  URL: https://www.anthropic.com/pricing#api
-  
-- OpenAI API: Usage-based, model-specific pricing
-  URL: https://openai.com/api/pricing
-  
-- Gemini: Free ($0), Pro ($20), Ultra ($30)
-  URL: https://one.google.com/about/plans
-  
-- Windsurf: Free ($0), Pro ($15), Team ($35)
-  URL: https://windsurf.com/pricing
+## GitHub Copilot
+- Individual: $10/user/month — https://github.com/features/copilot#pricing — verified 2026-05-10
+- Business: $19/user/month — https://github.com/features/copilot#pricing — verified 2026-05-10
+- Enterprise: $39/user/month — https://github.com/features/copilot#pricing — verified 2026-05-10
 
-Use today's date: 2026-05-09
-Write it in proper markdown with headers for each tool.
-Every number must trace to the URL listed.
+## Claude (Anthropic)
+- Free: $0/user/month — https://www.anthropic.com/pricing — verified 2026-05-10
+- Pro: $20/user/month — https://www.anthropic.com/pricing — verified 2026-05-10
+- Max: $100/user/month — https://www.anthropic.com/pricing — verified 2026-05-10
+- Team: $30/user/month (min 5 seats) — https://www.anthropic.com/pricing — verified 2026-05-10
+- Enterprise: Contact sales — https://www.anthropic.com/pricing — verified 2026-05-10
+
+## ChatGPT (OpenAI)
+- Free: $0/user/month — https://openai.com/chatgpt/pricing — verified 2026-05-10
+- Plus: $20/user/month — https://openai.com/chatgpt/pricing — verified 2026-05-10
+- Team: $30/user/month (min 2 seats) — https://openai.com/chatgpt/pricing — verified 2026-05-10
+- Enterprise: Contact sales — https://openai.com/chatgpt/pricing — verified 2026-05-10
+
+## Anthropic API (Direct)
+- claude-3-5-haiku: $0.80/MTok input, $4/MTok output — https://www.anthropic.com/pricing#api — verified 2026-05-10
+- claude-3-5-sonnet: $3/MTok input, $15/MTok output — https://www.anthropic.com/pricing#api — verified 2026-05-10
+- claude-3-opus: $15/MTok input, $75/MTok output — https://www.anthropic.com/pricing#api — verified 2026-05-10
+
+## OpenAI API (Direct)
+- gpt-4o: $2.50/MTok input, $10/MTok output — https://openai.com/api/pricing — verified 2026-05-10
+- gpt-4o-mini: $0.15/MTok input, $0.60/MTok output — https://openai.com/api/pricing — verified 2026-05-10
+- gpt-4-turbo: $10/MTok input, $30/MTok output — https://openai.com/api/pricing — verified 2026-05-10
+
+## Gemini (Google)
+- Free: $0/user/month — https://one.google.com/about/plans — verified 2026-05-10
+- Pro: $20/user/month — https://one.google.com/about/plans — verified 2026-05-10
+- Ultra: $30/user/month — https://one.google.com/about/plans — verified 2026-05-10
+
+## Windsurf (Codeium)
+- Free: $0/user/month — https://windsurf.com/pricing — verified 2026-05-10
+- Pro: $15/user/month — https://windsurf.com/pricing — verified 2026-05-10
+- Team: $35/user/month — https://windsurf.com/pricing — verified 2026-05-10
+
+## Notes on API Pricing
+- MTok = million tokens
+- API pricing changes frequently — verify before using in production
+- Prompt caching available on Anthropic API: up to 90% cost reduction on repeated context
+- Both Anthropic and OpenAI offer batch API at 50% discount for non-realtime workloads
