@@ -59,3 +59,7 @@ npm run dev
 
 ## 📄 License
 MIT
+
+---
+
+**Keywords:** Github, Express, Node.js, Tailwind CSS, CSS, HTML, Javascript, React.js, Web Development, Next.js 15, Supabase, AI Audit, Fintech, SaaS.
