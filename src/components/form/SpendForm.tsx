@@ -49,10 +49,12 @@ export default function SpendForm({ onSubmit }: SpendFormProps) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
+        /* eslint-disable react-hooks/set-state-in-effect */
         setTeamSize(parsed.teamSize || 1);
         setUseCase(parsed.useCase || 'mixed');
         setEnabledTools(parsed.enabledTools || {});
         setToolEntries(parsed.toolEntries || {});
+        /* eslint-enable react-hooks/set-state-in-effect */
       } catch (e) {
         console.error('Failed to parse saved state', e);
       }

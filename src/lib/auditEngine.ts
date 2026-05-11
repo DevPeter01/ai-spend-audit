@@ -1,9 +1,7 @@
 import { AuditInput, AuditResult, ToolRecommendation, ToolEntry, UseCaseType } from '@/types';
-import { PRICING_DATA } from '@/lib/pricingData';
 import { v4 as uuidv4 } from 'uuid';
 
 function analyzeToolSpend(entry: ToolEntry, teamSize: number, useCase: UseCaseType): ToolRecommendation {
-  const pricing = PRICING_DATA[entry.tool];
   const currentSpend = entry.monthlySpend;
   let recommendedAction = 'Keep current plan';
   let recommendedPlan = entry.plan;
