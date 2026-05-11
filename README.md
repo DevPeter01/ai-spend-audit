@@ -4,6 +4,12 @@
 
 Built as a lead generation asset for [Credex](https://credex.com).
 
+## 🌐 Live Demo
+
+**[ai-spend-audit-kappa-sand.vercel.app](https://ai-spend-audit-kappa-sand.vercel.app)**
+
+> No login required. Takes under 2 minutes.
+
 ## 🚀 Features
 
 - **Deterministic Savings Engine:** 50+ logic rules across 8 major AI tools (Cursor, Claude, ChatGPT, GitHub Copilot, Gemini, Windsurf, Anthropic API, OpenAI API).
