@@ -32,7 +32,7 @@ function analyzeToolSpend(entry: ToolEntry, teamSize: number, useCase: UseCaseTy
 
   // --- GITHUB COPILOT ---
   if (entry.tool === 'github-copilot') {
-    if (entry.plan === 'Enterprise' && entry.seats < 10) {
+    if (entry.plan === 'Enterprise' && entry.seats <= 10) {
       recommendedPlan = 'Business';
       estimatedNewSpend = 19 * entry.seats;
       recommendedAction = 'Downgrade to Business';
@@ -109,15 +109,6 @@ function analyzeToolSpend(entry: ToolEntry, teamSize: number, useCase: UseCaseTy
   }
 
   const monthlySavings = Math.max(0, currentSpend - estimatedNewSpend);
-
-  console.log('[AuditEngine]', {
-    tool: entry.tool,
-    currentSpend,
-    estimatedNewSpend,
-    monthlySavings,
-    plan: entry.plan,
-    seats: entry.seats,
-  });
 
   return {
     tool: entry.tool,
