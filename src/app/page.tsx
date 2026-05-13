@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import SpendForm from '@/components/form/SpendForm';
 import AuditResults from '@/components/results/AuditResults';
 import { runAudit } from '@/lib/auditEngine';
@@ -56,7 +55,7 @@ function LoadingState() {
     <main
       style={{
         minHeight: '100vh',
-        background: '#f9fafb',
+        background: 'linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 30%, #f9fafb 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -64,30 +63,37 @@ function LoadingState() {
       }}
     >
       <div style={{ textAlign: 'center' }}>
-        {/* Spinner */}
         <div
+          className="animate-pulse-glow"
           style={{
-            width: 48,
-            height: 48,
+            width: 72,
+            height: 72,
             borderRadius: '50%',
             border: '3px solid #d1fae5',
             borderTopColor: '#10b981',
             animation: 'spin 0.8s linear infinite',
-            margin: '0 auto 20px',
+            margin: '0 auto 24px',
+            background: 'rgba(16,185,129,0.05)',
           }}
         />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-
-        <p
-          style={{
-            fontSize: 16,
-            color: '#6b7280',
-            fontWeight: 500,
-            letterSpacing: '-0.01em',
-          }}
-        >
+        <p style={{ fontSize: 20, fontWeight: 700, color: '#111827', marginBottom: 8, letterSpacing: '-0.01em' }}>
           Analyzing your AI spend…
         </p>
+        <p style={{ fontSize: 14, color: '#9ca3af', fontWeight: 400 }}>
+          Comparing plans, finding savings, generating insights
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 24 }}>
+          {[0, 1, 2].map(i => (
+            <div
+              key={i}
+              style={{
+                width: 8, height: 8, borderRadius: '50%',
+                background: '#10b981',
+                animation: `pulse-glow 1.2s ease-in-out ${i * 0.2}s infinite`,
+              }}
+            />
+          ))}
+        </div>
       </div>
     </main>
   );
@@ -96,7 +102,6 @@ function LoadingState() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Home() {
-  const router = useRouter();
   const [result, setResult] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -127,20 +132,20 @@ export default function Home() {
           auditResult = { ...preliminary, aiSummary: aiSummary || undefined };
         }
 
-        // Step 4: Render results and push shareable URL.
+        // Step 4: Render results and update URL without full navigation.
         setResult(auditResult);
-        router.push(`/audit/${auditResult.id}`, { scroll: false });
+        window.history.pushState(null, '', `/audit/${auditResult.id}`);
       } finally {
         setLoading(false);
       }
     },
-    [router],
+    [],
   );
 
   const handleReset = useCallback(() => {
     setResult(null);
-    router.push('/', { scroll: false });
-  }, [router]);
+    window.history.pushState(null, '', '/');
+  }, []);
 
   // ── Render states ──────────────────────────────────────────────────────────
 
@@ -150,7 +155,7 @@ export default function Home() {
 
   if (result) {
     return (
-      <main className="min-h-screen bg-gray-50 py-8">
+      <main style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #f0fdf4 0%, #f9fafb 30%, #fff 100%)', paddingTop: 32, paddingBottom: 32 }}>
         <div className="max-w-2xl mx-auto px-4">
           <AuditResults result={result} onReset={handleReset} />
         </div>
@@ -159,7 +164,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-8">
+    <main style={{ minHeight: '100vh', background: 'linear-gradient(180deg, #f0fdf4 0%, #f9fafb 30%, #fff 100%)', paddingTop: 32, paddingBottom: 32 }}>
       <SpendForm onSubmit={handleSubmit} />
     </main>
   );

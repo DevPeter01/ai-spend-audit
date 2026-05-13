@@ -27,7 +27,9 @@
 ## 5. FAQ Copy
 - **"How accurate is this?"** Our engine uses live pricing data verified as of May 10, 2026. 
 - **"Do you need access to my accounts?"** No. This is a self-reported audit. We don't need your API keys or bank access.
-- **"Who is this for?"** Engineering Managers, Founders, and Finance Ops looking to optimize their burn rate without sacrificing developer productivity.
+- **"Who is this for?"** Engineering Managers, Founders, and Finance Ops looking to optimize their burn rate.
+- **"Why is it free?"** It's a lead magnet for Credex. We find the savings in your SaaS stack; we help you save on your API stack.
+- **"What happens to my data?"** We store audit results anonymously. Leads are stored securely in Supabase and never shared with third parties.
 
 ## 6. Footer / Final CTA
 - **Headline:** Ready to find your first $500?

@@ -27,7 +27,10 @@ We track four categories of metrics to measure the health of the project as a le
 - **CPSQL (Cost Per Sales Qualified Lead):** Total project cost / Leads with >$500/mo savings.
 - **Pipeline Value:** Total annual savings identified for all captured leads (represents the potential "optimization budget" Credex can capture).
 
----
+## 5. Pivot Triggers
+- **Low Completion Rate (<40%):** If users drop off before finishing the audit, we will simplify the form to 3 tools instead of 8.
+- **Low Lead Capture (<5%):** If users don't leave emails, we will gate the full AI summary behind the email capture.
+- **Low SQL Value:** If savings identified are consistently <$100, we will pivot to auditing GPU/Cloud spend instead of SaaS tools.
 
 ## Metric Tracking Implementation
 - **Client-side:** Basic event tracking on form submission and lead capture.

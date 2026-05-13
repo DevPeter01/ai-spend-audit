@@ -63,6 +63,24 @@ npm run dev
 - [Metrics](./METRICS.md) — North Star and funnel definitions.
 - [Reflection](./REFLECTION.md) — Technical wins and lessons learned.
 
+## 🖼️ Screenshots
+
+### 1. Spend Input Form
+![Spend Form](./public/screenshots/form.png)
+*Team size, use case, and multi-tool selector with plan-specific logic.*
+
+### 2. Audit Results Dashboard
+![Results Dashboard](./public/screenshots/results.png)
+*Emerald green theme highlighting monthly and annual savings with AI-generated insights.*
+
+## 🧠 Key Decisions
+
+1. **Deterministic vs. Probabilistic Math:** Chose hardcoded pricing rules over LLM-generated math to ensure 100% accuracy and user trust.
+2. **Next.js 15 App Router:** Used for built-in SEO (OG tags) and unified API/Frontend routes in a single Vercel deployment.
+3. **Supabase for Persistence:** Chose for instant REST APIs and easy scaling from MVP to production with PostgreSQL.
+4. **Raw Fetch for Anthropic API:** Removed the official SDK to reduce bundle weight and gain precise control over timeout/fallback behavior.
+5. **PII-Free Audit Routing:** Stored email/company in a separate `leads` table to ensure public audit URLs remain anonymized and secure.
+
 ## 📄 License
 MIT
 

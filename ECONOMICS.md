@@ -44,6 +44,19 @@ A company identified by this tool as having $500+/mo in "waste" on high-level AI
 | **SQLs identified (5%)** | 5 | 50 | 500 |
 | **Estimated Conversions (1%)** | 0.2 | 2 | 20 |
 | **Projected Revenue (LTV)** | $2,400 | $24,000 | $240,000 |
+| **Projected Margin (10%)** | $240 | $2,400 | $24,000 |
 
-## 6. Conclusion
+## 6. Path to $1M ARR
+
+To reach $1M in annual recurring revenue for Credex via this distribution channel:
+
+1. **Traffic Generation:** Scale to 5,000 audits per month (60,000/year).
+2. **Lead Conversion (20%):** Generate 1,000 email leads per month.
+3. **SQL Identification (5%):** Identify 50 high-savings leads (>$500/mo) per month.
+4. **Sales Conversion (15%):** Convert 7.5 SQLs into Credex infrastructure customers per month.
+5. **Revenue per Customer:** Average customer generates $1,000/mo in margin ($12k/year).
+6. **Total New ARR:** 7.5 customers/mo × $12k/year = **$90,000 new ARR per month**.
+7. **Timeline:** In 12 months, this generates **$1.08M in ARR** from this channel alone.
+
+## 7. Conclusion
 The economics of this tool are extremely favorable because the **variable cost is near zero**, and the **intent signal is extremely high**. A user who completes a 6-step spend audit and provides their email is signaling they are actively looking to optimize their AI budget — making them the perfect prospect for Credex infrastructure credits.
