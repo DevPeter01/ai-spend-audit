@@ -1,56 +1,78 @@
-# User Interviews — AI Spend Audit
+## Interview 1
+**Name:** Dinesh G
+**Role:** Founder
+**Company stage:** Startup
+**Date:** 2026-05-12
+**Method:** WhatsApp conversation
+**Duration:** ~15 minutes
 
-To validate the product, we spoke with three distinct profiles representing our target segments. These interviews helped refine the audit engine's logic and the "savings" narrative.
+### AI Tools They Use
+Cursor, Antigravity (primary IDE), Claude via 
+Antigravity, Gemini via Antigravity. Uses multiple 
+AI tools simultaneously through one platform rather 
+than paying for each separately.
 
----
+### Direct Quotes
+- "I compare time efficiency and switch — if one 
+  tool does in 1 hour what another does in 3 days, 
+  where will I go? I'll choose the 1 hour one."
 
-## Interview 1: Sarah, Engineering Manager
-**Profile:** EM at a 40-person Series A SaaS startup.  
-**Current AI Stack:** Cursor (Business), GitHub Copilot (Business), Claude (Team).
+- "The tool can't say I'm overpaying because I know 
+  which tool to use for what — one AI tool spends 
+  tokens for particular things and another costs 
+  tokens for particular things."
 
-### Key Takeaways:
-- **Visibility Gap:** Sarah approves the bills but doesn't know who is actually using what. She suspected "seat bloat" but had no way to quantify it without manual spreadsheets.
-- **The "Business Tier" Trap:** They were on Cursor Business for everyone, even though only the admin needed the management features.
-- **Feature Overlap:** They pay for both Copilot and Cursor. "It feels redundant, but engineers are picky."
+- "Antigravity charges per hour but I don't always 
+  know how much I've used in that time — I just 
+  pay for it."
 
-### Product Changes Made:
-- Added specific logic to recommend downgrading Cursor Business to Pro for smaller teams (<5 seats).
-- Added the "Redundancy" alert when both Cursor and Copilot are selected.
+### Most Surprising Thing They Said
+He pushed back on the core premise of the tool. 
+He argued that a spend audit is less useful for 
+power users who actively monitor tool efficiency 
+— his switching decisions are based on time saved, 
+not cost per month. This challenged my assumption 
+that all users want to minimize spend. Some users 
+optimize for output per hour, not cost per month.
 
----
-
-## Interview 2: Mike, Solo Founder & Indie Hacker
-**Profile:** Building a solo AI-wrapper startup.  
-**Current AI Stack:** ChatGPT Plus, Claude Pro, Gemini Ultra.
-
-### Key Takeaways:
-- **Subscription Fatigue:** "I just subscribe to everything to see what's best, then forget to cancel."
-- **Consolidation Desire:** Mike wanted to know if one tool could replace three. 
-- **Cost vs. Value:** He's willing to pay $20/mo but not $60/mo for overlapping functionality.
-
-### Product Changes Made:
-- Built the "Consolidation" logic that recommends picking one "General Assistant" (Claude vs ChatGPT vs Gemini) based on the primary use case.
-- Added the "Use Case" selector to the form to make recommendations more relevant.
-
----
-
-## Interview 3: Alex, Finance Ops
-**Profile:** Finance Operations at a 120-person Series B Fintech.  
-**Current AI Stack:** OpenAI API ($2k/mo), Anthropic API ($1k/mo).
-
-### Key Takeaways:
-- **API Black Box:** Unlike seat-based tools, API spend is harder to audit. "I see a $2,000 bill and just have to trust it."
-- **Missing Optimizations:** Alex wasn't aware of prompt caching or the price difference between GPT-4o and 4o-mini for simple tasks.
-- **The "Safety" Hurdle:** They won't switch models if it breaks production, but they *will* switch for internal dev tools.
-
-### Product Changes Made:
-- Added API-specific recommendations for "Prompt Caching" (Anthropic) and "Model Auditing" (OpenAI).
-- Added the 30%–50% estimated savings metric for unoptimized API spend.
+### What It Changed About Your Design
+Added use-case context to the audit results — 
+instead of only showing "switch to save money," 
+recommendations now include capability reasoning 
+("for coding workflows, this tool gives equivalent 
+output at lower cost"). This makes the tool 
+relevant even for efficiency-focused users, not 
+just cost-cutters.
 
 ---
 
-## Synthesis of Observations
+## Interview 2
+[PENDING — scheduled for 2026-05-13]
 
-1. **The "Shadow AI" Problem:** Most companies have no centralized registry of AI tools. Individual engineers often expense $20/mo individual plans while the company also pays for team plans.
-2. **Fear of Missing Out (FOMO):** Teams stay on Enterprise or Business plans because they "might need the security features," even when they don't use them yet.
-3. **High Willingness to Optimize:** Every interviewee expressed immediate interest in a "1-minute audit." Cost is becoming a top-of-mind metric for EMs as AI budgets scale.
+---
+
+## Interview 3
+[PENDING — scheduled for 2026-05-13]
+
+---
+
+## Synthesis
+
+### Common Themes
+[To be completed after interviews 2 and 3]
+
+### Biggest Surprise
+Interview 1 challenged the core assumption that 
+users want to minimize AI spend. This user 
+optimizes for time efficiency, not cost — and 
+argues that a power user already knows which 
+tool to use for what task. The real target user 
+for this product may be managers and team leads 
+who approve budgets but don't use the tools 
+daily — not the developers who use them.
+
+### How It Changed the Product
+Shifted audit result framing from pure cost 
+reduction to value-per-use-case. The most 
+important insight: the tool is most valuable 
+to budget approvers, not power users.
