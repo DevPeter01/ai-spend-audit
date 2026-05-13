@@ -1,111 +1,193 @@
-# Reflection — AI Spend Audit
+# REFLECTION.md
 
-## 1. Technical Wins
+## Question 1 — Hardest Bug and How I Debugged It
 
-### Deterministic Audit Logic
-One of the most important decisions in this project was keeping the savings calculations deterministic instead of relying on AI-generated recommendations for pricing logic.
+The hardest bug I hit was a race condition in the 
+SpendForm component's localStorage persistence.
 
-Initially, I considered letting the LLM generate optimization suggestions directly from the user's tool stack. However, after reviewing the assignment more carefully, I realized financial recommendations need predictable and explainable logic. A hallucinated pricing recommendation would reduce trust in the product immediately.
+When the page loaded, the form would briefly show 
+saved data and then immediately clear it back to 
+empty. My first hypothesis was that the localStorage 
+key was wrong or the data was being stored under a 
+different key. I added console.log to check the key 
+name — it was correct.
 
-Because of that, I separated the architecture into:
-- rule-based audit calculations
-- AI-generated narrative summaries
+My second hypothesis was that JSON.parse was failing 
+on corrupted data. I logged the raw localStorage 
+value — the data was valid JSON and intact.
 
-The audit engine handles all pricing and savings calculations using structured pricing data, while the AI layer only generates human-readable summaries. This made the recommendations easier to debug and more reliable.
+The real issue took me about 40 minutes to find. 
+I had two useEffect hooks in the same component. 
+One loaded data from localStorage on mount. The 
+other saved data to localStorage whenever any state 
+changed. The problem was that the SAVE effect was 
+firing before the LOAD effect finished — it was 
+seeing the empty initial state and writing that 
+back to localStorage, overwriting the saved data.
 
----
+The fix was adding an isLoaded boolean state. 
+The save effect now checks if(!isLoaded) return 
+before writing anything. The load effect sets 
+isLoaded to true after successfully reading. This 
+ensures the save effect never fires before the 
+load effect completes.
 
-### Project Structure and Type Safety
-Using Next.js with TypeScript helped keep the project organized as the number of files grew. Early in development, TypeScript caught several issues related to incorrect tool IDs and mismatched object structures.
-
-Separating logic into:
-- `auditEngine.ts`
-- `pricingData.ts`
-- reusable types
-- API route folders
-
-made the project easier to reason about and modify.
-
-One particularly useful decision was centralizing pricing information into a dedicated file instead of scattering pricing logic throughout components. This simplified future updates and reduced repeated logic.
-
----
-
-### Persistence and User Experience
-I implemented localStorage persistence for the spend form because the audit process requires users to gather subscription and billing information manually. During testing, I realized users would likely switch tabs frequently while checking invoices or subscription dashboards.
-
-Without persistence, losing entered data after refresh would create unnecessary friction and likely reduce completion rate.
-
-Although simple technically, this ended up being one of the most important UX improvements in the project.
-
----
-
-## 2. Challenges & Lessons Learned
-
-### Project Structure and Import Issues
-One of the most frustrating issues during development was related to project structure and import resolution.
-
-At one point, I accidentally created folders outside the actual Next.js project root. Because of this, TypeScript imports like `@/types` failed even though the files technically existed on disk.
-
-Initially, I assumed the issue was related to tsconfig path aliases or TypeScript configuration. After debugging for a while, I realized the real problem was incorrect filesystem structure rather than code logic.
-
-Fixing the project structure resolved multiple cascading issues immediately.
-
-This reinforced an important lesson:
-many frontend build problems are actually environment or project organization problems rather than framework bugs.
+What I learned: when two useEffect hooks touch 
+the same external resource, you need explicit 
+coordination between them. React does not 
+guarantee useEffect execution order across 
+renders the way you might assume.
 
 ---
 
-### API Integration Decisions
-Initially, I planned to use the official Anthropic SDK for AI summary generation. After experimenting with the setup, I realized direct fetch requests would be simpler and easier to debug for the current project scope.
+## Question 2 — A Decision I Reversed Mid-Week
 
-Switching away from the SDK reduced dependency complexity and gave me more direct control over:
-- request payloads
-- error handling
-- fallback behavior
+I initially installed the @anthropic-ai/sdk package 
+to integrate the Anthropic API for the personalized 
+summary feature. This seemed like the obvious choice 
+— use the official SDK.
 
-This experience reinforced that adding more abstractions is not always the best engineering decision, especially in MVP-stage projects.
+After writing the integration, I realized the SDK 
+was adding complexity without any real benefit. The 
+SDK abstracts the HTTP call, but I needed precise 
+control over timeout behavior and fallback logic. 
+With the SDK, the error handling was less transparent 
+— I couldn't easily intercept failures and route 
+them to my template fallback.
 
----
+I reversed the decision on Day 2 and rewrote the 
+summary route using a direct fetch() call to the 
+Anthropic API endpoint. This gave me full control 
+over the try/catch flow, made the fallback behavior 
+explicit and easy to test, removed 200KB of 
+unnecessary bundle weight, and made the code 
+readable to any developer without SDK knowledge.
 
-## 3. What I’d Improve With More Time
-
-### Benchmark Comparison Mode
-If I had more time, I would implement benchmark-based comparisons.
-
-Instead of only showing raw savings, the product could compare user spending against similar teams and use cases. For example:
-> "Teams of your size spend 28% less on AI coding tools."
-
-This would make recommendations feel more contextual and persuasive.
-
----
-
-### Better Shareable Reports
-I would improve the shareable audit pages by adding dynamic Open Graph image generation.
-
-Currently, shared links are functional, but generating branded preview cards with savings numbers would improve visibility when shared on LinkedIn or Twitter.
-
----
-
-### Admin Analytics Dashboard
-Another improvement would be an internal dashboard showing:
-- most common AI tools
-- average spend by team size
-- highest savings opportunities
-- conversion rates from audit submissions
-
-This would make the project more useful as an actual lead-generation platform for Credex rather than only a standalone audit tool.
+The lesson was: don't add a dependency just because 
+it exists. If raw fetch handles the job clearly and 
+gives you more control, use it. Abstractions have 
+a cost — they hide behavior you sometimes need to 
+see.
 
 ---
 
-## 4. Final Thoughts
+## Question 3 — What I Would Build in Week 2
 
-This project was more interesting than a normal frontend assignment because it required balancing:
-- engineering
-- product thinking
-- UX decisions
-- pricing logic
-- and business reasoning
+**First: Dynamic OG Image Generation**
+The shareable /audit/[id] URL currently has Open 
+Graph meta tags but no image. When shared on 
+Twitter or LinkedIn, no preview card appears. I 
+would add Vercel's @vercel/og library to generate 
+a dynamic image showing the savings number in 
+large text on a branded card. This single change 
+would dramatically increase click-through rate 
+on shared links — it's the difference between 
+a plain URL and a compelling visual card.
 
-The technical implementation itself was manageable, but the more difficult part was designing a flow that felt realistic and useful rather than just generating random AI recommendations.
+**Second: Embeddable Widget**
+A script tag that any blogger or AI tool review 
+site could drop into their page. When embedded, 
+it shows a mini audit form. This turns every AI 
+tool comparison blog into a distribution channel. 
+The blogger embeds it once, their readers use it 
+continuously, and Credex receives leads from 
+audiences we would never reach through direct 
+marketing.
 
-The assignment also reinforced how important debugging, architecture decisions, and documentation quality are in real-world development workflows.
+**Third: Benchmark Mode**
+Add team-size-based comparisons: "Your team spends 
+$X per developer per month. Teams your size 
+average $Y." This context transforms the product 
+from a savings calculator into a competitive 
+intelligence tool. A user who thinks their spending 
+is normal suddenly sees they are 40% above average 
+for their team size. That urgency converts passive 
+visitors into active Credex customers.
+
+---
+
+## Question 4 — How I Used AI Tools
+
+I used Claude throughout the week as my primary 
+development assistant via the Antigravity IDE.
+
+**What I used AI for:**
+- Generating initial component boilerplate and 
+  TypeScript type definitions
+- Scaffolding the audit engine logic from rules 
+  I described in plain English
+- Writing first drafts of markdown documentation
+- Debugging TypeScript compilation errors
+- Suggesting fixes during code review passes
+
+**What I did NOT trust AI with:**
+- Architectural decisions — I personally decided 
+  Next.js over plain React, Supabase over Firebase, 
+  raw fetch over the Anthropic SDK
+- Pricing data verification — I checked every 
+  number against official vendor pricing pages
+- The audit logic reasoning — I verified each 
+  savings calculation manually with real numbers
+- User interviews — these were real conversations 
+  with real people
+- Final review before every commit — I read every 
+  generated file before staging it
+
+**One specific time AI was wrong and I caught it:**
+When I asked Claude to set up the Anthropic API 
+integration, it generated code using 
+@anthropic-ai/sdk and also installed uuid@14 
+paired with @types/uuid@10 — mismatched major 
+versions that caused TypeScript warnings. I caught 
+both issues during a systematic code audit. I 
+removed the SDK entirely and downgraded both 
+uuid packages to aligned v9 versions. The AI 
+generated working-looking code that had real 
+problems underneath — catching that required 
+actually reading and understanding the output, 
+not just accepting it.
+
+---
+
+## Question 5 — Self Ratings
+
+**Discipline: 6/10**
+I started strong on Days 1-2 with consistent 
+commits and clear progress. Mid-week I had some 
+sessions that were less focused. The git history 
+reflects this honestly — some days have more 
+meaningful commits than others.
+
+**Code Quality: 8/10**
+TypeScript strict mode throughout with zero any 
+types. Clean abstractions across auditEngine, 
+pricingData, and shared UI components. Eight 
+passing Vitest tests. Lost two points for leaving 
+a console.log in production code that I caught 
+during the final audit.
+
+**Design Sense: 7/10**
+The results page is clean, visually clear, and 
+screenshot-worthy with the emerald green savings 
+hero. The form works well functionally. I would 
+give myself higher if I had added the OG image 
+generation and spent more time on mobile 
+responsiveness.
+
+**Problem Solving: 8/10**
+Found and fixed five real bugs through systematic 
+code auditing rather than guessing — the 
+localStorage race condition, wrong lead field 
+name, missing database migration, incorrect spend 
+calculation in the AI summary, and uuid version 
+mismatch. Each required forming a hypothesis and 
+testing it rather than changing random things.
+
+**Entrepreneurial Thinking: 7/10**
+The isHighSavings flag connecting the free tool 
+to Credex's sales motion was my own insight. 
+GTM and ECONOMICS documents show genuine business 
+reasoning with real numbers. Lost points for not 
+completing user interviews earlier in the week — 
+I underestimated how much scheduling real 
+conversations takes.
